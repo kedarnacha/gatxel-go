@@ -1,19 +1,19 @@
 package main
 
 import (
-	// "log"
-
 	"context"
 	"log"
 	"net/http"
 
+	"gatxel-appointment/config"
+	"gatxel-appointment/database"
+	"gatxel-appointment/repository"
+	"gatxel-appointment/router"
+	"gatxel-appointment/service"
+
 	"github.com/caarlos0/env/v11"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"honnef.co/go/tools/config"
-	// "github.com/joho/godotenv"
-	// "gatxel-appointment/config"
-	// "gatxel-appointment/routes"
 )
 
 var DB *pgxpool.Pool
@@ -21,28 +21,37 @@ var DB *pgxpool.Pool
 func main() {
 	cfg, err := env.ParseAs[config.Config]()
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatalf("Error parsing config: %v", err)
 	}
 
-	db := database.New(context.Background(), cfg)
+	// Initialize database connection
+	db, err := database.New(context.Background(), cfg)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
+	// Run database migrations
 	err = database.Migrate(cfg)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatalf("Failed to migrate database: %v", err)
 	}
+
+	// Initialize Gin router
 	r := gin.Default()
+
+	// Setup routers
 	router.SetupAppointmentRouter(r, db)
 	router.SetupUserRouter(r, db)
+
+	// Initialize authentication components
 	authRepository := repository.NewAuthRepository(db)
 	authService := service.NewAuthService(authRepository)
 	router.SetupAuthRouter(r, authService.(*service.AuthService))
 
 	r.GET("/", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "server is run")
+		ctx.String(http.StatusOK, "Server is running")
 	})
+
 	log.Printf("Server running on port %s", cfg.Port)
 	if err := r.Run(":" + cfg.Port); err != nil {
 		log.Fatalf("Server failed: %v", err)
