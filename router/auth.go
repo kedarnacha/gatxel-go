@@ -1,9 +1,10 @@
 package router
 
 import (
+	"gatxel-appointment/handler"
+	"gatxel-appointment/service"
+
 	"github.com/gin-gonic/gin"
-	"github.com/kedarnacha/gatxel-go/handler"
-	"github.com/kedarnacha/gatxel-go/service"
 )
 
 func SetupAuthRouter(r *gin.Engine, authService *service.AuthService) {
