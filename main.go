@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	"gatxel-appointment/config"
 	"gatxel-appointment/database"
 	"gatxel-appointment/repository"
 	"gatxel-appointment/router"
@@ -19,7 +18,7 @@ import (
 var DB *pgxpool.Pool
 
 func main() {
-	cfg, err := env.ParseAs[config.Config]()
+	cfg, err := env.ParseAs[config.config]()
 	if err != nil {
 		log.Fatalf("Error parsing config: %v", err)
 	}
@@ -41,6 +40,7 @@ func main() {
 
 	// Setup routers
 	router.SetupAppointmentRouter(r, db)
+	router.SetupNotificationRouter(r, db)
 	router.SetupUserRouter(r, db)
 
 	// Initialize authentication components

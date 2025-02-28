@@ -1,6 +1,7 @@
 package router
 
 import (
+	"gatxel-appointment/handler"
 	"gatxel-appointment/repository"
 
 	"github.com/gin-gonic/gin"
