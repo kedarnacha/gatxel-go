@@ -1,8 +1,8 @@
 package router
 
 import (
-	"gatxel-appointment/handler"
-	"gatxel-appointment/service"
+	"github.com/kedarnacha/gatxel-go/handler"
+	"github.com/kedarnacha/gatxel-go/service"
 
 	"github.com/gin-gonic/gin"
 )

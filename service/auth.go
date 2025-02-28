@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"gatxel-appointment/helper"
-	"gatxel-appointment/models"
+	"github.com/kedarnacha/gatxel-go/helper"
+	"github.com/kedarnacha/gatxel-go/models"
 	"os"
 	"time"
 

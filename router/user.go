@@ -1,11 +1,11 @@
 package router
 
 import (
-	"gatxel-appointment/repository"
+	"github.com/kedarnacha/gatxel-go/repository"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"gatxel-appointment/handler"
+	"github.com/kedarnacha/gatxel-go/handler"
 )
 
 func SetupUserRouter(r *gin.Engine, db *pgxpool.Pool) {

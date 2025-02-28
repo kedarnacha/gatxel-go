@@ -5,11 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	"gatxel-appointment/config"
-	"gatxel-appointment/database"
-	"gatxel-appointment/repository"
-	"gatxel-appointment/router"
-	"gatxel-appointment/service"
+	"github.com/kedarnacha/gatxel-go/config"
+	"github.com/kedarnacha/gatxel-go/database"
+	"github.com/kedarnacha/gatxel-go/repository"
+	"github.com/kedarnacha/gatxel-go/router"
+	"github.com/kedarnacha/gatxel-go/service"
 
 	"github.com/caarlos0/env/v11"
 	"github.com/gin-gonic/gin"

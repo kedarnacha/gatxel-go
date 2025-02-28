@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"gatxel-appointment/helper"
-	"gatxel-appointment/models"
+	"github.com/kedarnacha/gatxel-go/helper"
+	"github.com/kedarnacha/gatxel-go/models"
 	"net/http"
 	"strconv"
 
