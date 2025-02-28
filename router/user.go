@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/kedarnacha/gatxel-go/handler"
 )
 
 func SetupUserRouter(r *gin.Engine, db *pgxpool.Pool) {

@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"gatxel-appointment/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kedarnacha/gatxel-go/models"
 )
 
 type AuthHandler struct {

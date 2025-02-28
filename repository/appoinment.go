@@ -5,7 +5,7 @@ import (
 	"gatxel-appointment/models"
 )
 
-type AppointmentRepository interface {
+type AppoinmentRepository interface {
 	GetAllAppointments(ctx context.Context) ([]*models.Appointment, error)
 	GetAppointmentByID(ctx context.Context, id int64) (*models.Appointment, error)
 	CreateAppointment(ctx context.Context, appointment *models.Appointment) (*models.Appointment, error)

@@ -1,12 +1,12 @@
 package handler
 
 import (
+	"gatxel-appointment/helper"
+	"gatxel-appointment/models"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kedarnacha/gatxel-go/helper"
-	"github.com/kedarnacha/gatxel-go/models"
 )
 
 type NotificationHandler struct {
