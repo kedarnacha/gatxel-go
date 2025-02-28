@@ -45,12 +45,12 @@ func (h *AppoinmentHandler) GetAppointmentByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))
 		return
 	}
-	appointment, err := h.repository.GetAppoinmentByID(ctx, int64(id))
+	appoinment, err := h.repository.GetAppoinmentByID(ctx, int64(id))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get appointment"))
+		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get appoinment"))
 		return
 	}
-	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", appointment))
+	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", appoinment))
 }
 
 func (h *AppoinmentHandler) UpdateAppoinmentByID(ctx *gin.Context) {

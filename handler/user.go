@@ -9,15 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserHandler struct {
+type HandlerUser struct {
 	repository models.UserRepository
 }
 
-func NewUserHandler(repository models.UserRepository) *UserHandler {
-	return &UserHandler{repository: repository}
+func NewUserHandler(repository models.UserRepository) *HandlerUser {
+	return &HandlerUser{repository: repository}
 }
 
-func (h *UserHandler) GetAllUsers(c *gin.Context) {
+func (h *HandlerUser) GetAllUsers(c *gin.Context) {
 	users, err := h.repository.GetAllUser(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))
@@ -25,7 +25,7 @@ func (h *UserHandler) GetAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", users))
 }
 
-func (h *UserHandler) CreateUser(ctx *gin.Context) {
+func (h *HandlerUser) CreateUser(ctx *gin.Context) {
 	user := &models.User{}
 	if err := ctx.ShouldBindJSON(user); err != nil {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Payload invalid"))
@@ -39,7 +39,7 @@ func (h *UserHandler) CreateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, helper.ResponseSuccess("Create data successfully", user))
 }
 
-func (h *UserHandler) GetUserByID(ctx *gin.Context) {
+func (h *HandlerUser) GetUserByID(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))
@@ -53,7 +53,7 @@ func (h *UserHandler) GetUserByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", user))
 }
 
-func (h *UserHandler) UpdateUserByID(ctx *gin.Context) {
+func (h *HandlerUser) UpdateUserByID(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))
@@ -84,7 +84,7 @@ func (h *UserHandler) UpdateUserByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Update data successfully", updatedUser))
 }
 
-func (h *UserHandler) DeleteUserByID(ctx *gin.Context) {
+func (h *HandlerUser) DeleteUserByID(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))

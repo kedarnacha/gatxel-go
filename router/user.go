@@ -2,6 +2,7 @@ package router
 
 import (
 	"gatxel-appointment/handler"
+	"gatxel-appointment/middleware"
 	"gatxel-appointment/repository"
 
 	"github.com/gin-gonic/gin"
@@ -9,14 +10,16 @@ import (
 )
 
 func SetupUserRouter(r *gin.Engine, db *pgxpool.Pool) {
-	userRepository := repository.NewUserRepository(db)
-	userHandler := handler.NewHandlerUser(userRepository)
-	userGroup := r.Group("/users")
+	UserRepository := repository.NewUserRepository(db)
+	userHandler := handler.NewHandlerUser(UserRepository)
+	user := r.Group("/user")
+	user.Use(middleware.AuthProtected(db), middleware.RoleRequired("admin"))
+
 	{
-		userGroup.GET("/", userHandler.GetAllUsers)
-		userGroup.POST("/", userHandler.CreateUser)
-		userGroup.GET("/:id", userHandler.GetUserByID)
-		userGroup.PUT("/:id", userHandler.UpdateUserByID)
-		userGroup.DELETE("/:id", userHandler.DeleteUserByID)
+		user.GET("/", userHandler.GetAllUsers)
+		user.POST("/", userHandler.CreateUser)
+		user.GET("/:id", userHandler.GetUserByID)
+		user.PUT("/:id", userHandler.UpdateUserByID)
+		user.DELETE("/:id", userHandler.DeleteUserByID)
 	}
 }
