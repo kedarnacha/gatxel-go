@@ -2,8 +2,7 @@ package repository
 
 import (
 	"context"
-
-	"github.com/kedarnacha/gatxel-go/models"
+	"gatxel-appointment/models"
 )
 
 type NotificationRepository interface {
