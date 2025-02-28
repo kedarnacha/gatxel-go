@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"gatxel-appointment/helper"
 	"gatxel-appointment/models"
 	"net/http"
 	"strconv"

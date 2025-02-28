@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/kedarnacha/gatxel-go/models/handler"
-	"google.golang.org/grpc/profiling/service"
+	"github.com/kedarnacha/gatxel-go/handler"
+	"github.com/kedarnacha/gatxel-go/service"
 )
 
 func SetupAuthRouter(r *gin.Engine, authService *service.AuthService) {
