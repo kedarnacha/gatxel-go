@@ -18,7 +18,7 @@ func NewUserHandler(repository models.UserRepository) *UserHandler {
 }
 
 func (h *UserHandler) GetAllUsers(c *gin.Context) {
-	users, err := h.repository.GetAllUsers(c)
+	users, err := h.repository.GetAllUser(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))
 	}
