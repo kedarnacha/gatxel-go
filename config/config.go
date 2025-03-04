@@ -1,21 +1,14 @@
 package config
 
-import (
-	"log"
-	"os"
-	"gorm.io/driver/postgres" //sesuaikan dengan db yang mau kamu pakai
-	"gorm.io/gorm"
-)
+type Config struct {
+	Port string `env:"PORT" envDefault:"8000"`
+	Env  string `env:"ENV" envDefault:"dev"`
 
-var DB *gorm.DB
+	DatabaseUsername string `env:"DB_USERNAME"`
+	DatabasePassword string `env:"DB_PASSWORD"`
+	DatabaseHost     string `env:"DB_HOST"`
+	DatabasePort     string `env:"DB_PORT"`
+	DatabaseName     string `env:"DB_NAME"`
 
-func InitDB() *gorm.DB {
-	dsn := os.Getenv("DATABASE_URL") 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatal("Failed to connect to the database:", err)
-	}
-
-	DB = db
-	return db
+	MigrationPath string `env:"MIGRATION_PATH" envDefault:"./migrations"`
 }

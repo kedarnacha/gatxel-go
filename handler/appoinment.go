@@ -18,10 +18,11 @@ func NewAppoinmentHandler(repository models.AppoinmentRepository) *AppoinmentHan
 	return &AppoinmentHandler{repository: repository}
 }
 
-func (h *AppoinmentHandler) GetAllAppoinments(c *gin.Context) {
+func (h *AppoinmentHandler) GetAllAppoinment(c *gin.Context) {
 	appoinments, err := h.repository.GetAllAppoinment(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))
+		return
 	}
 	c.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", appoinments))
 }
@@ -32,11 +33,13 @@ func (h *AppoinmentHandler) CreateAppointment(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Payload invalid"))
 		return
 	}
+
 	appoinment, err := h.repository.CreateAppoinment(ctx, appoinment)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to create appointment"))
 		return
 	}
+
 	ctx.JSON(http.StatusCreated, helper.ResponseSuccess("Create data successfully", appoinment))
 }
 
@@ -46,29 +49,32 @@ func (h *AppoinmentHandler) GetAppointmentByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))
 		return
 	}
-	appoinment, err := h.repository.GetAppoinmentByID(ctx, int64(id))
+
+	appointment, err := h.repository.GetAppoinmentByID(ctx, int64(id))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get appoinment"))
+		ctx.JSON(http.StatusNotFound, helper.ResponseFailed("Appointment not found"))
 		return
 	}
-	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", appoinment))
+
+	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", appointment))
 }
 
-func (h *AppoinmentHandler) UpdateAppoinmentByID(ctx *gin.Context) {
+func (h *AppoinmentHandler) UpdateAppointmentByID(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))
 		return
 	}
-	appoinment, err := h.repository.GetAppoinmentByID(ctx, int64(id))
+
+	_, err = h.repository.GetAppoinmentByID(ctx, int64(id))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get appoinment"))
+		ctx.JSON(http.StatusNotFound, helper.ResponseFailed("Appointment not found"))
 		return
 	}
 
-	updateData := models.Appoinment{}
+	var updateData models.Appoinment
 	if err := ctx.ShouldBindJSON(&updateData); err != nil {
-		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid payload"))
+		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid request body"))
 		return
 	}
 
@@ -78,11 +84,13 @@ func (h *AppoinmentHandler) UpdateAppoinmentByID(ctx *gin.Context) {
 		"start_time":  updateData.StartTime,
 		"end_time":    updateData.EndTime,
 	}
+
 	updatedAppoinment, err := h.repository.UpdateAppoinmentByID(ctx, int64(id), data)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to update appointment"))
 		return
 	}
+
 	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Update data successfully", updatedAppoinment))
 }
 
@@ -92,10 +100,12 @@ func (h *AppoinmentHandler) DeleteAppoinmentByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))
 		return
 	}
+
 	err = h.repository.DeleteAppoinmentByID(ctx, int64(id))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to delete appointment"))
+		ctx.JSON(http.StatusNotFound, helper.ResponseFailed("Appoinment not found"))
 		return
 	}
+
 	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Delete data successfully", nil))
 }

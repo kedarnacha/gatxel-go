@@ -1,12 +1,12 @@
 package handler
 
 import (
-	"gatxel-appointment/helper"
-	"gatxel-appointment/models"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kedarnacha/gatxel-go/helper"
+	"github.com/kedarnacha/gatxel-go/models"
 )
 
 type NotificationHandler struct {
@@ -18,7 +18,7 @@ func NewNotificationHandler(repository models.NotificationRepository) *Notificat
 }
 
 func (h *NotificationHandler) GetAllNotifications(c *gin.Context) {
-	notifications, err := h.repository.GetAllNotifications(c)
+	notification, err := h.repository.GetAllNotification(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))
 	}
@@ -59,18 +59,18 @@ func (h *NotificationHandler) UpdateNotificationByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))
 		return
 	}
-	notification, err := h.repository.GetNotificationByID(ctx, int64(id))
+
+	_, err = h.repository.GetNotificationByID(ctx, int64(id))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get notification"))
+		ctx.JSON(http.StatusNotFound, helper.ResponseFailed("Notification not found"))
 		return
 	}
 
-	updateData := models.Notification{}
+	var updateData models.Notification
 	if err := ctx.ShouldBindJSON(&updateData); err != nil {
-		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid payload"))
+		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid request body"))
 		return
 	}
-
 	data := map[string]interface{}{
 		"message": updateData.Message,
 		"is_sent": updateData.IsSent,
@@ -80,6 +80,7 @@ func (h *NotificationHandler) UpdateNotificationByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to update notification"))
 		return
 	}
+
 	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Update data successfully", updatedNotification))
 }
 
