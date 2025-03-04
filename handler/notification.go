@@ -18,7 +18,7 @@ func NewNotificationHandler(repository models.NotificationRepository) *Notificat
 }
 
 func (h *NotificationHandler) GetAllNotifications(c *gin.Context) {
-	notification, err := h.repository.GetAllNotification(c)
+	notifications, err := h.repository.GetAllNotifications(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))
 	}

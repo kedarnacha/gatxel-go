@@ -1,9 +1,9 @@
 package router
 
 import (
-	"gatxel-appointment/handler"
-	"gatxel-appointment/middleware"
-	"gatxel-appointment/repository"
+	"github.com/kedarnacha/gatxel-go/handler"
+	"github.com/kedarnacha/gatxel-go/middleware"
+	"github.com/kedarnacha/gatxel-go/repository"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

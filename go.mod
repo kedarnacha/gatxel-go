@@ -1,4 +1,4 @@
-module gatxel-appointment
+module github.com/kedarnacha/gatxel-go
 
 go 1.24.0
 

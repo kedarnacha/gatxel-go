@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"gatxel-appointment/models"
+	"github.com/kedarnacha/gatxel-go/models"
 	"net/http"
 	"os"
 	"strings"

@@ -5,10 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	"gatxel-appointment/database"
-	"gatxel-appointment/repository"
-	"gatxel-appointment/router"
-	"gatxel-appointment/service"
+	"github.com/kedarnacha/gatxel-go/database"
+	"github.com/kedarnacha/gatxel-go/repository"
+	"github.com/kedarnacha/gatxel-go/router"
+	"github.com/kedarnacha/gatxel-go/service"
 
 	"github.com/caarlos0/env/v11"
 	"github.com/gin-gonic/gin"
@@ -39,7 +39,7 @@ func main() {
 	r := gin.Default()
 
 	// Setup routers
-	router.SetupAppointmentRouter(r, db)
+	router.SetupAppoinmentRouter(r, db)
 	router.SetupNotificationRouter(r, db)
 	router.SetupUserRouter(r, db)
 

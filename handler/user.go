@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"gatxel-appointment/helper"
-	"gatxel-appointment/models"
 	"net/http"
 	"strconv"
+
+	"github.com/kedarnacha/gatxel-go/helper"
+	"github.com/kedarnacha/gatxel-go/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,8 +17,8 @@ type HandlerUser struct {
 func NewUserHandler(repository models.UserRepository) *HandlerUser {
 	return &HandlerUser{repository: repository}
 }
-
-func (h *HandlerUser) GetAllUsers(c *gin.Context) {
+x	x
+func (h *UserHandler) GetAllUsers(c *gin.Context) {
 	users, err := h.repository.GetAllUser(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))

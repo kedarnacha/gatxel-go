@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"gatxel-appointment/helper"
-	"gatxel-appointment/models"
 	"net/http"
 	"strconv"
+
+	"github.com/kedarnacha/gatxel-go/helper"
+	"github.com/kedarnacha/gatxel-go/models"
 
 	"github.com/gin-gonic/gin"
 )
