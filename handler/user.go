@@ -17,7 +17,7 @@ type UserHandler struct {
 func NewUserHandler(repository models.UserRepository) *UserHandler {
 	return &UserHandler{repository: repository}
 }
-func (h *UserHandler) GetAllUsers(c *gin.Context) {
+func (h *UserHandler) GetAllUser(c *gin.Context) {
 	user, err := h.repository.GetAllUser(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))

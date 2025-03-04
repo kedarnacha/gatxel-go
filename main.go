@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/kedarnacha/gatxel-go/config"
 	"github.com/kedarnacha/gatxel-go/database"
 	"github.com/kedarnacha/gatxel-go/repository"
 	"github.com/kedarnacha/gatxel-go/router"
@@ -18,32 +19,26 @@ import (
 var DB *pgxpool.Pool
 
 func main() {
-	cfg, err := env.ParseAs[config.config]()
+	cfg, err := env.ParseAs[config.Config]()
 	if err != nil {
 		log.Fatalf("Error parsing config: %v", err)
 	}
 
-	// Initialize database connection
-	db, err := database.New(context.Background(), cfg)
+	db := database.New(context.Background(), cfg)
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		log.Fatal(err.Error())
 	}
-
-	// Run database migrations
 	err = database.Migrate(cfg)
 	if err != nil {
-		log.Fatalf("Failed to migrate database: %v", err)
+		log.Fatal(err.Error())
 	}
 
-	// Initialize Gin router
 	r := gin.Default()
 
-	// Setup routers
 	router.SetupAppoinmentRouter(r, db)
 	router.SetupNotificationRouter(r, db)
 	router.SetupUserRouter(r, db)
 
-	// Initialize authentication components
 	authRepository := repository.NewAuthRepository(db)
 	authService := service.NewAuthService(authRepository)
 	router.SetupAuthRouter(r, authService.(*service.AuthService))
