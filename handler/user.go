@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/kedarnacha/gatxel-go/helper"
-	"github.com/kedarnacha/gatxel-go/models"
 	"net/http"
 	"strconv"
+
+	"github.com/kedarnacha/gatxel-go/helper"
+	"github.com/kedarnacha/gatxel-go/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,27 +17,12 @@ type UserHandler struct {
 func NewUserHandler(repository models.UserRepository) *UserHandler {
 	return &UserHandler{repository: repository}
 }
-
-func (h *UserHandler) GetAllUsers(c *gin.Context) {
-	users, err := h.repository.GetAllUser(c)
+func (h *UserHandler) GetAllUser(c *gin.Context) {
+	user, err := h.repository.GetAllUser(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))
 	}
-	c.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", users))
-}
-
-func (h *UserHandler) CreateUser(ctx *gin.Context) {
-	user := &models.User{}
-	if err := ctx.ShouldBindJSON(user); err != nil {
-		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Payload invalid"))
-		return
-	}
-	user, err := h.repository.CreateUser(ctx, user)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to create user"))
-		return
-	}
-	ctx.JSON(http.StatusCreated, helper.ResponseSuccess("Create data successfully", user))
+	c.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", user))
 }
 
 func (h *UserHandler) GetUserByID(ctx *gin.Context) {
@@ -59,18 +45,18 @@ func (h *UserHandler) UpdateUserByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid ID"))
 		return
 	}
-	user, err := h.repository.GetUserByID(ctx, int64(id))
+
+	_, err = h.repository.GetUserByID(ctx, int64(id))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get user"))
+		ctx.JSON(http.StatusNotFound, helper.ResponseFailed("User not found"))
 		return
 	}
 
-	updateData := models.User{}
+	var updateData models.User
 	if err := ctx.ShouldBindJSON(&updateData); err != nil {
-		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid payload"))
+		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Invalid request body"))
 		return
 	}
-
 	data := map[string]interface{}{
 		"username": updateData.Username,
 		"email":    updateData.Email,

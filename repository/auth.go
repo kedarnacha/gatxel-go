@@ -2,16 +2,35 @@ package repository
 
 import (
 	"context"
+
 	"github.com/kedarnacha/gatxel-go/models"
+	"gorm.io/gorm"
 )
 
-type AuthRepository interface {
-	RegisterUser(ctx context.Context, User *models.User) (*models.User, error)
-	GetUser(ctx context.Context, query interface{}, args ...interface{}) (*models.User, error)
+type AuthRepository struct {
+	db *gorm.DB
 }
 
-type AuthService interface {
-	Login(ctx context.Context, login *models.AuthCredentials) (string, *models.User, error)
-	Register(ctx context.Context, register *models.User) (string, *models.User, error)
-	Logout(ctx context.Context, token string) error
+func (r *AuthRepository) RegisterUser(ctx context.Context, User *models.User) (*models.User, error) {
+	if err := r.db.Create(User).Error; err != nil {
+		return nil, err
+	}
+
+	return User, nil
+}
+
+func (r *AuthRepository) GetUser(ctx context.Context, query interface{}, args ...interface{}) (*models.User, error) {
+	user := &models.User{}
+
+	if res := r.db.Model(user).Where(query, args...).First(user); res.Error != nil {
+		return nil, res.Error
+	}
+
+	return user, nil
+}
+
+func NewAuthRepository(db *gorm.DB) models.AuthRepository {
+	return &AuthRepository{
+		db: db,
+	}
 }

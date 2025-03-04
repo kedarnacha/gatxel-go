@@ -1,22 +1,24 @@
 package router
 
 import (
+	"github.com/kedarnacha/gatxel-go/handler"
+	"github.com/kedarnacha/gatxel-go/middleware"
 	"github.com/kedarnacha/gatxel-go/repository"
+	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/kedarnacha/gatxel-go/handler"
 )
 
-func SetupUserRouter(r *gin.Engine, db *pgxpool.Pool) {
-	userRepository := repository.NewUserRepository(db)
-	userHandler := handler.NewHandlerUser(userRepository)
-	userGroup := r.Group("/users")
+func SetupUserRouter(r *gin.Engine, db *gorm.DB) {
+	UserRepository := repository.NewUserRepository(db)
+	UserHandler := handler.NewUserHandler(UserRepository)
+
+	user := r.Group("/user")
+	user.Use(middleware.AuthProtected(db), middleware.RoleRequired("admin"))
 	{
-		userGroup.GET("/", userHandler.GetAllUsers)
-		userGroup.POST("/", userHandler.CreateUser)
-		userGroup.GET("/:id", userHandler.GetUserByID)
-		userGroup.PUT("/:id", userHandler.UpdateUserByID)
-		userGroup.DELETE("/:id", userHandler.DeleteUserByID)
+		user.GET("", UserHandler.GetAllUser)
+		user.GET("/:id", UserHandler.GetUserByID)
+		user.PUT("/:id", UserHandler.UpdateUserByID)
+		user.DELETE("/:id", UserHandler.DeleteUserByID)
 	}
 }

@@ -1,21 +1,20 @@
 package middleware
 
 import (
-	"context"
 	"errors"
 	"fmt"
-	"github.com/kedarnacha/gatxel-go/models"
 	"net/http"
 	"os"
 	"strings"
 
+	"github.com/kedarnacha/gatxel-go/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/jackc/pgx"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"gorm.io/gorm"
 )
 
-func AuthProtected(db *pgxpool.Pool) gin.HandlerFunc {
+func AuthProtected(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader("Authorization")
 		if authHeader == "" {
@@ -77,23 +76,15 @@ func AuthProtected(db *pgxpool.Pool) gin.HandlerFunc {
 		}
 
 		var user models.User
-		if err := db.QueryRow(context.Background(), "SELECT id FROM users WHERE id=$1", int64(userId)).Scan(&user.ID); err != nil {
-			if errors.Is(err, pgx.ErrNoRows) {
-				ctx.JSON(http.StatusUnauthorized, gin.H{
-					"status":  "fail",
-					"message": "Unauthorized - User Not Found",
-				})
-				ctx.Abort()
-				return
-			}
-			ctx.JSON(http.StatusInternalServerError, gin.H{
+		if err := db.Where("id = ?", int64(userId)).First(&user).Error; errors.Is(err, gorm.ErrRecordNotFound) {
+
+			ctx.JSON(401, gin.H{
 				"status":  "fail",
-				"message": "Internal Server Error",
+				"message": "Unauthorized - User Not Found",
 			})
 			ctx.Abort()
 			return
 		}
-
 		ctx.Set("userId", userId)
 		ctx.Next()
 	}

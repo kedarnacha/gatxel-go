@@ -24,26 +24,21 @@ func main() {
 		log.Fatalf("Error parsing config: %v", err)
 	}
 
-	// Initialize database connection
-	db, err := database.New(context.Background(), cfg)
+	db := database.New(context.Background(), cfg)
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		log.Fatal(err.Error())
 	}
-
-	// Run database migrations
 	err = database.Migrate(cfg)
 	if err != nil {
-		log.Fatalf("Failed to migrate database: %v", err)
+		log.Fatal(err.Error())
 	}
 
-	// Initialize Gin router
 	r := gin.Default()
 
-	// Setup routers
-	router.SetupAppointmentRouter(r, db)
+	router.SetupAppoinmentRouter(r, db)
+	router.SetupNotificationRouter(r, db)
 	router.SetupUserRouter(r, db)
 
-	// Initialize authentication components
 	authRepository := repository.NewAuthRepository(db)
 	authService := service.NewAuthService(authRepository)
 	router.SetupAuthRouter(r, authService.(*service.AuthService))

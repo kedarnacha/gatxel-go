@@ -9,7 +9,7 @@ import (
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
-	"honnef.co/go/tools/config"
+	"github.com/kedarnacha/gatxel-go/config"
 )
 
 func Migrate(cfg config.Config) error {

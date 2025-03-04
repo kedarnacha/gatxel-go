@@ -4,15 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/kedarnacha/gatxel-go/helper"
-	"github.com/kedarnacha/gatxel-go/models"
 	"os"
 	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/kedarnacha/gatxel-go/helper"
+	"github.com/kedarnacha/gatxel-go/models"
+	"github.com/kedarnacha/gatxel-go/utils"
+
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"gorm.io/gorm/utils"
 )
 
 type AuthService struct {
@@ -24,7 +25,6 @@ func NewAuthService(repository models.AuthRepository) models.AuthService {
 		repository: repository,
 	}
 }
-
 func (s *AuthService) Login(ctx context.Context, login *models.AuthCredentials) (string, *models.User, error) {
 	user, err := s.repository.GetUser(ctx, "email = ?", login.Email)
 
