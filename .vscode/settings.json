@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "gatxel-go",
+            "username": "postgres",
+            "password": "Yusron",
+            "connectionTimeout": 30,
+            "database": "demo"
+        }
+    ]
+}
