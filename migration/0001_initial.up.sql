@@ -1,31 +1,28 @@
--- Tabel "user" untuk menyimpan informasi pengguna
-CREATE TABLE "user" (
+CREATE TABLE IF NOT EXISTS "user" (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabel appoinment untuk menyimpan informasi janji temu
-CREATE TABLE appoinment (
+CREATE TABLE IF NOT EXISTS appoinment (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    appoinment_date TIMESTAMP NOT NULL,
+    user_id INT NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
+    title VARCHAR(100) NOT NULL,
     description TEXT,
-    status VARCHAR(20) DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE
+    start_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    end_time TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabel notification untuk menyimpan informasi notifikasi
-CREATE TABLE notification (
+CREATE TABLE IF NOT EXISTS notification (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    appoinment_id INTEGER,
+    user_id INT NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
+    appoinment_id INT NOT NULL REFERENCES appoinment(id) ON DELETE CASCADE,
     message TEXT NOT NULL,
-    is_read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE,
-    FOREIGN KEY (appoinment_id) REFERENCES appoinment(id) ON DELETE CASCADE
+    is_sent BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
