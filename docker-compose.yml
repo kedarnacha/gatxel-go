@@ -1,20 +1,23 @@
+version: '3.8'
+
 services:
   app:
     build:
       context: .
     container_name: gatxel_go_app
     environment:
-      DB_USERNAME: ${gatxel}
+      DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: postgres
+      DB_HOST: postgres  
       DB_PORT: ${DB_PORT}
-      DB_NAME: ${gatxel}
+      DB_NAME: ${DB_NAME}
+      PORT: ${PORT}
     ports:
-      - "8000:8000"
+      - "${PORT}:8000"
     depends_on:
       - postgres
     volumes:
-      - ./migrations:/migrations
+      - ./migration:/app/migration
     networks:
       - gatxel_go_network
 
@@ -23,15 +26,17 @@ services:
     container_name: gatxel_go_postgres
     restart: always
     environment:
-      POSTGRES_USER: ${gatxel}
+      POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${gatxel}
+      POSTGRES_DB: ${DB_NAME}
       POSTGRES_HOST_AUTH_METHOD: md5
     ports:
       - "5431:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./migrations:/docker-entrypoint-initdb.d
+      - /app/migration:/0001_initial.up
+      - /app/migration:/0001_initial.down     
+
     networks:
       - gatxel_go_network
 

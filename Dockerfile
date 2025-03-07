@@ -23,7 +23,7 @@ WORKDIR /app
 # Copy the binary from the build stage
 COPY --from=build /app/main .
 
-COPY migrations ./migrations
+COPY migration /app/migration
 
 
 # Set the timezone and install CA certificates

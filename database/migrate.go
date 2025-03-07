@@ -55,6 +55,6 @@ func Migrate(cfg config.Config) error {
 		}
 	}
 
-	log.Println("Migrations applied successfully.")
+	log.Println("Migration applied successfully.")
 	return nil
 }

@@ -10,5 +10,5 @@ type Config struct {
 	DatabasePort     string `env:"DB_PORT"`
 	DatabaseName     string `env:"DB_NAME"`
 
-	MigrationPath string `env:"MIGRATION_PATH" envDefault:"./migrations"`
+	MigrationPath string `env:"MIGRATION_PATH" envDefault:"/app/migration"`
 }
