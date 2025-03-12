@@ -14,9 +14,10 @@ services:
     ports:
       - "${PORT}:8000"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy  # 👈 Menunggu PostgreSQL siap
     volumes:
-    - ./migration:/app/migration
+      - ./migration:/app/migration
     networks:
       - gatxel_go_network
 
@@ -34,9 +35,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./migration:/app/migration   
-
     networks:
       - gatxel_go_network
+    healthcheck:   
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 5s
+      retries: 5
 
 volumes:
   postgres_data:
