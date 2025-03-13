@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM golang:1.23.3-alpine3.20 AS build
+FROM golang:1.24.0-alpine3.20 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -23,7 +23,8 @@ WORKDIR /app
 # Copy the binary from the build stage
 COPY --from=build /app/main .
 
-COPY --from=build /app/migrations ./migrations
+COPY migration /app/migration
+
 
 # Set the timezone and install CA certificates
 RUN apk --no-cache add ca-certificates tzdata

@@ -9,7 +9,9 @@ import (
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/kedarnacha/gatxel-go/config"
+	_ "github.com/lib/pq"
 )
 
 func Migrate(cfg config.Config) error {
@@ -40,7 +42,9 @@ func Migrate(cfg config.Config) error {
 
 	m, err := migrate.NewWithDatabaseInstance(
 		fmt.Sprintf("file://%s", cfg.MigrationPath),
-		"postgres", driver)
+		"postgres",
+		driver,
+	)
 	if err != nil {
 		log.Printf("Failed to initialize migration: %v", err)
 		return err
@@ -55,6 +59,6 @@ func Migrate(cfg config.Config) error {
 		}
 	}
 
-	log.Println("Migrations applied successfully.")
+	log.Println("Migration applied successfully.")
 	return nil
 }

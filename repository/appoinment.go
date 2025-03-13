@@ -15,13 +15,13 @@ func NewAppoinmentRepository(db *gorm.DB) *AppoinmentRepository {
 	return &AppoinmentRepository{db: db}
 }
 
-func (r *AppoinmentRepository) GetAllAppoinments(ctx context.Context) ([]*models.Appoinment, error) {
-	var appoinments []*models.Appoinment
-	err := r.db.Model(&models.Appoinment{}).Find(&appoinments).Error
+func (r *AppoinmentRepository) GetAllAppoinment(ctx context.Context) ([]*models.Appoinment, error) {
+	var appoinment []*models.Appoinment
+	err := r.db.Model(&models.Appoinment{}).Find(&appoinment).Error
 	if err != nil {
 		return nil, err
 	}
-	return appoinments, nil
+	return appoinment, nil
 }
 
 func (r *AppoinmentRepository) CreateAppoinment(ctx context.Context, appoinment *models.Appoinment) (*models.Appoinment, error) {
