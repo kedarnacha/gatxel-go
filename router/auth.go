@@ -10,8 +10,12 @@ import (
 func SetupAuthRouter(r *gin.Engine, authService *service.AuthService) {
 
 	authHandler := handler.NewAuthHandler(authService)
+	auth := r.Group("/auth")
+	{
+		auth.POST("/login", authHandler.Login)
+		auth.POST("/register", authHandler.Register)
+		auth.POST("/logout", authHandler.Logout)
 
-	r.POST("/login", authHandler.Login)
-	r.POST("/register", authHandler.Register)
-	r.POST("/logout", authHandler.Logout)
+	}
+
 }

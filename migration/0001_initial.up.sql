@@ -24,5 +24,5 @@ CREATE TABLE notification (
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
+    FOREIGN KEY (appointment_id) REFERENCES appointment(id) ON DELETE CASCADE
 );
