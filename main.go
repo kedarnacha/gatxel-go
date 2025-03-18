@@ -19,7 +19,7 @@ import (
 var DB *pgxpool.Pool
 
 func main() {
-	cfg, err := env.ParseAs[config.Config]()
+	cfg, err := env.ParseAs[config.Config]() //cek
 	if err != nil {
 		log.Fatalf("Error parsing config: %v", err)
 	}
