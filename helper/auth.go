@@ -88,13 +88,24 @@ func IsValidEmail(email string) bool {
 	}
 	return true
 }
-
 func IsValidPassword(password string) bool {
 	if len(password) < 8 {
+		fmt.Println("Password kurang dari 8 karakter")
 		return false
 	}
 	reUppercase := regexp.MustCompile(`[A-Z]`)
 	reDigit := regexp.MustCompile(`\d`)
 	reSymbol := regexp.MustCompile(`[\W_]`)
+
+	if !reUppercase.MatchString(password) {
+		fmt.Println("Password tidak mengandung huruf kapital")
+	}
+	if !reDigit.MatchString(password) {
+		fmt.Println("Password tidak mengandung angka")
+	}
+	if !reSymbol.MatchString(password) {
+		fmt.Println("Password tidak mengandung simbol")
+	}
+
 	return reUppercase.MatchString(password) && reDigit.MatchString(password) && reSymbol.MatchString(password)
 }
