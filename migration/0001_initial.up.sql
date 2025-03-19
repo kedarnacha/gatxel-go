@@ -5,14 +5,14 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
-CREATE TABLE appointment (
+CREATE TABLE appoinment (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    appointment_date TIMESTAMP NOT NULL,
+    appoinment_date TIMESTAMP NOT NULL,
     description TEXT,
     status VARCHAR(20) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
