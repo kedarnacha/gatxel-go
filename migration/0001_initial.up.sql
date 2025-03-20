@@ -1,3 +1,5 @@
+SET search_path TO Gatxel;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -17,15 +19,16 @@ CREATE TABLE appoinment (
     status VARCHAR(20) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    
 );
 
 CREATE TABLE notification (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    appointment_id INTEGER,
+    appoinment_id INTEGER,
     message TEXT NOT NULL,
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (appointment_id) REFERENCES appointment(id) ON DELETE CASCADE
+    FOREIGN KEY (appoinment_id) REFERENCES appoinment(id) ON DELETE CASCADE
 );

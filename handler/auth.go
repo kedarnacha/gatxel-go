@@ -61,6 +61,11 @@ func (h *AuthHandler) Register(ctx *gin.Context) {
 		return
 	}
 
+	if creds.Email == "" || creds.Password == "" {
+		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Email dan password tidak boleh kosong"))
+		return
+	}
+
 	if !helper.IsValidEmail(creds.Email) {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Email not valid"))
 		return

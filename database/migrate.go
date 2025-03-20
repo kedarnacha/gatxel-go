@@ -16,7 +16,7 @@ import (
 
 func Migrate(cfg config.Config) error {
 	pass := url.QueryEscape(cfg.DatabasePassword)
-	dsn := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable",
+	dsn := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable&search_path=Gatxel",
 		cfg.DatabaseUsername,
 		pass,
 		fmt.Sprintf("%s:%s", cfg.DatabaseHost, cfg.DatabasePort),
@@ -30,11 +30,18 @@ func Migrate(cfg config.Config) error {
 	}
 	defer db.Close()
 
+	fmt.Println("Migration path:", cfg.MigrationPath)
+
+	cfg.MigrationPath = "./migration"
+
 	if _, err := os.Stat(cfg.MigrationPath); os.IsNotExist(err) {
 		return fmt.Errorf("migration path does not exist: %s", cfg.MigrationPath)
 	}
 
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	driver, err := postgres.WithInstance(db, &postgres.Config{
+		MigrationsTable: "schema_migrations",
+		SchemaName:      "Gatxel",
+	})
 	if err != nil {
 		log.Printf("Failed to create migration driver: %v", err)
 		return err

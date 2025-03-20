@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/kedarnacha/gatxel-go/helper"
@@ -55,15 +56,34 @@ func (s *AuthService) Login(ctx context.Context, login *models.AuthCredentials) 
 }
 
 func (s *AuthService) Register(ctx context.Context, register *models.User) (string, *models.User, error) {
+	if register.Email == "" || register.Password == "" {
+		return "", nil, errors.New("email dan password tidak boleh kosong")
+	}
+
+	fmt.Println("Mendaftarkan user dengan email:", register.Email)
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(register.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return "", nil, err
+		fmt.Println("Gagal hashing password:", err)
+		return "", nil, errors.New("gagal hashing password")
 	}
 	register.Password = string(hashedPassword)
 
 	user, err := s.repository.RegisterUser(ctx, register)
 	if err != nil {
-		return "", nil, err
+		if strings.Contains(err.Error(), "Duplicate entry") {
+			return "", nil, errors.New("email sudah terdaftar")
+		}
+		fmt.Println("Error saat menyimpan user:", err)
+		return "", nil, errors.New("gagal menyimpan user ke database")
+	}
+
+	fmt.Println("User berhasil didaftarkan dengan ID:", user.ID)
+
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		fmt.Println("JWT_SECRET belum di-set di env")
+		return "", nil, errors.New("server error: JWT_SECRET tidak ditemukan")
 	}
 
 	claims := jwt.MapClaims{
@@ -71,11 +91,13 @@ func (s *AuthService) Register(ctx context.Context, register *models.User) (stri
 		"role": user.Role,
 		"exp":  time.Now().Add(time.Second * 86400).Unix(),
 	}
-	token, err := utils.GenerateJWT(claims, jwt.SigningMethodHS256, os.Getenv("JWT_SECRET"))
+	token, err := utils.GenerateJWT(claims, jwt.SigningMethodHS256, secret)
 	if err != nil {
-		return "", nil, err
+		fmt.Println("Error saat membuat JWT:", err)
+		return "", nil, errors.New("gagal membuat token JWT")
 	}
 
+	fmt.Println("JWT berhasil dibuat untuk user:", user.Email)
 	return token, user, nil
 }
 
