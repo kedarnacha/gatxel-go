@@ -1,4 +1,4 @@
-SET search_path TO Gatxel;
+SET search_path TO gatxel;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
