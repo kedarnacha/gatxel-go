@@ -19,12 +19,12 @@ func NewAppoinmentHandler(repository models.AppoinmentRepository) *AppoinmentHan
 }
 
 func (h *AppoinmentHandler) GetAllAppoinment(c *gin.Context) {
-	appoinments, err := h.repository.GetAllAppoinment(c)
+	appoinment, err := h.repository.GetAllAppoinment(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))
 		return
 	}
-	c.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", appoinments))
+	c.JSON(http.StatusOK, helper.ResponseSuccess("Fetch data successfully", appoinment))
 }
 
 func (h *AppoinmentHandler) CreateAppointment(ctx *gin.Context) {

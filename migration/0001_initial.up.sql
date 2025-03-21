@@ -11,10 +11,10 @@ CREATE TABLE users (
 );
 
 
-CREATE TABLE appoinment (
+CREATE TABLE appointment (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    appoinment_date TIMESTAMP NOT NULL,
+    appointment_date TIMESTAMP NOT NULL,
     description TEXT,
     status VARCHAR(20) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -25,10 +25,10 @@ CREATE TABLE appoinment (
 CREATE TABLE notification (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    appoinment_id INTEGER,
+    appointment_id INTEGER,
     message TEXT NOT NULL,
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (appoinment_id) REFERENCES appoinment(id) ON DELETE CASCADE
+    FOREIGN KEY (appointment_id) REFERENCES appointment(id) ON DELETE CASCADE
 );
