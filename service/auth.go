@@ -79,7 +79,7 @@ func (s *AuthService) Register(ctx context.Context, register *models.User) (stri
 	}
 
 	fmt.Println("User berhasil didaftarkan dengan ID:", user.ID)
-
+	fmt.Println("JWT_SECRET:", os.Getenv("DB_NAME"))
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
 		fmt.Println("JWT_SECRET belum di-set di env")
