@@ -1,11 +1,14 @@
 services:
   app:
+    env_file:
+      - .env
     build:
       context: .
     container_name: gatxel_go_app
     environment:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: $12bsga
       DB_HOST: postgres  
       DB_PORT: ${DB_PORT}
       DB_NAME: ${DB_NAME}
