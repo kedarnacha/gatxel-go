@@ -1,4 +1,5 @@
-SET search_path TO gatxel;
+-- CREATE SCHEMA IF NOT EXISTS gatxel;
+-- SET search_path TO gatxel;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -18,8 +19,7 @@ CREATE TABLE appointment (
     description TEXT,
     status VARCHAR(20) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE 
 );
 
 CREATE TABLE notification (
