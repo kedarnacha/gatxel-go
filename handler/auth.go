@@ -41,18 +41,20 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 	}
 
 	token, _, err := h.service.Login(ctxTimeout, creds)
-
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Bad Request"))
 		return
 	}
-	ctx.SetCookie("token", token, 3600*24*1, "/", "", false, true)
-	ctx.JSON(http.StatusOK, helper.ResponseSuccess("Login success", token))
-}
 
+	ctx.SetCookie("token", token, 3600*24*1, "/", "", false, true)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Login success",
+		"token":   token,
+	})
+}
 func (h *AuthHandler) Register(ctx *gin.Context) {
 	creds := &models.User{}
-
 	ctxTimeout, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -81,14 +83,17 @@ func (h *AuthHandler) Register(ctx *gin.Context) {
 	}
 
 	token, _, err := h.service.Register(ctxTimeout, creds)
-	ctx.SetCookie("token", token, 3600*24*1, "/", "", false, true)
-
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helper.ResponseFailed("Bad Request"))
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, helper.ResponseSuccess("Register success", token))
+	ctx.SetCookie("token", token, 3600*24*1, "/", "", false, true)
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message": "Register success",
+		"token":   token,
+	})
 }
 
 func (h *AuthHandler) Logout(ctx *gin.Context) {
