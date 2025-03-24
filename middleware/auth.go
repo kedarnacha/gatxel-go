@@ -17,6 +17,8 @@ import (
 func AuthProtected(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader("Authorization")
+		fmt.Println("Authorization Header:", authHeader)
+
 		if authHeader == "" {
 			ctx.JSON(http.StatusUnauthorized, gin.H{
 				"status":  "fail",
@@ -27,6 +29,8 @@ func AuthProtected(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		tokenParts := strings.Split(authHeader, " ")
+		fmt.Println("Token Parts:", tokenParts)
+
 		if len(tokenParts) != 2 || tokenParts[0] != "Bearer" {
 			ctx.JSON(http.StatusUnauthorized, gin.H{
 				"status":  "fail",
