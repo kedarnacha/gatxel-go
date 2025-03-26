@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/kedarnacha/gatxel-go/models"
 	"gorm.io/gorm"
@@ -16,7 +17,9 @@ func NewAppoinmentRepository(db *gorm.DB) *AppoinmentRepository {
 }
 
 func (r *AppoinmentRepository) GetAllAppoinment(ctx context.Context) ([]*models.Appoinment, error) {
+	fmt.Println("Querying table: appoinment")
 	var appoinment []*models.Appoinment
+
 	err := r.db.Model(&models.Appoinment{}).Find(&appoinment).Error
 	if err != nil {
 		return nil, err

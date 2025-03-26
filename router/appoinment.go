@@ -16,9 +16,9 @@ func SetupAppoinmentRouter(r *gin.Engine, db *gorm.DB) {
 	appoinment.Use(middleware.AuthProtected(db))
 	{
 		appoinment.GET("", appoinmentHandler.GetAllAppoinment)
-		appoinment.POST("", middleware.RoleRequired("admin"), appoinmentHandler.CreateAppointment)
-		appoinment.GET("/:id", appoinmentHandler.GetAppointmentByID)
-		appoinment.PUT("/:id", middleware.RoleRequired("admin"), appoinmentHandler.UpdateAppointmentByID)
+		appoinment.POST("", middleware.RoleRequired("admin"), appoinmentHandler.CreateAppoinment)
+		appoinment.GET("/:id", appoinmentHandler.GetAppoinmentByID)
+		appoinment.PUT("/:id", middleware.RoleRequired("admin"), appoinmentHandler.UpdateAppoinmentByID)
 		appoinment.DELETE("/:id", middleware.RoleRequired("admin"), appoinmentHandler.DeleteAppoinmentByID)
 	}
 }

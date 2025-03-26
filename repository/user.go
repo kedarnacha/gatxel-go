@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/kedarnacha/gatxel-go/models"
 	"gorm.io/gorm"
@@ -17,6 +18,7 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 
 func (r *UserRepository) GetAllUser(ctx context.Context) ([]*models.User, error) {
 	var user []*models.User
+	fmt.Println(user)
 	err := r.db.Model(&models.User{}).Find(&user).Error
 	if err != nil {
 		return nil, err

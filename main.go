@@ -58,7 +58,7 @@ func main() {
 
 	authRepository := repository.NewAuthRepository(db)
 	authService := service.NewAuthService(authRepository)
-	router.SetupAuthRouter(r, authService.(*service.AuthService))
+	router.SetupAuthRouter(r, authService.(*service.AuthService), db)
 
 	r.GET("/", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "Server is running")

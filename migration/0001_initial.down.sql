@@ -1,8 +1,8 @@
--- Drop 'notifications' table if it exists
-DROP TABLE IF EXISTS notifications;
+-- Drop 'notification' table if it exists
+DROP TABLE IF EXISTS notification;
 
--- Drop 'appointments' table if it exists
-DROP TABLE IF EXISTS appointments;
+-- Drop 'appoinment' table if it exists
+DROP TABLE IF EXISTS appoinment;
 
 -- Drop 'users' table if it exists
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user;

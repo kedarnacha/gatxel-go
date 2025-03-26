@@ -16,7 +16,7 @@ func SetupNotificationRouter(r *gin.Engine, db *gorm.DB) {
 	notification := r.Group("/notification")
 	notification.Use(middleware.AuthProtected(db))
 	{
-		notification.GET("", notificationHandler.GetAllNotifications)
+		notification.GET("", notificationHandler.GetAllNotification)
 		notification.POST("", middleware.RoleRequired("admin"), notificationHandler.CreateNotification)
 		notification.GET("/:id", notificationHandler.GetNotificationByID)
 		notification.PUT("/:id", middleware.RoleRequired("admin"), notificationHandler.UpdateNotificationByID)
