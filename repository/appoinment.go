@@ -20,7 +20,7 @@ func (r *AppoinmentRepository) GetAllAppoinment(ctx context.Context) ([]*models.
 	fmt.Println("Querying table: appoinment")
 	var appoinment []*models.Appoinment
 
-	err := r.db.Model(&models.Appoinment{}).Find(&appoinment).Error
+	err := r.db.Table("appoinment").Find(&appoinment).Error
 	if err != nil {
 		return nil, err
 	}

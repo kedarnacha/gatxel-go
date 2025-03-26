@@ -17,7 +17,7 @@ func NewNotificationRepository(db *gorm.DB) *NotificationRepository {
 
 func (r *NotificationRepository) GetAllNotification(ctx context.Context) ([]*models.Notification, error) {
 	var notification []*models.Notification
-	err := r.db.Model(&models.Notification{}).Find(&notification).Error
+	err := r.db.Table("notification").Find(&notification).Error
 	if err != nil {
 		return nil, err
 	}
