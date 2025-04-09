@@ -16,6 +16,7 @@ CREATE TABLE appoinment (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
     appoinment_date TIMESTAMP NOT NULL,
+    title TEXT,
     description TEXT,
     status VARCHAR(20) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -27,7 +28,7 @@ CREATE TABLE notification (
     user_id INTEGER NOT NULL,
     appoinment_id INTEGER,
     message TEXT NOT NULL,
-    is_read BOOLEAN DEFAULT FALSE,
+    is_sent BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (appoinment_id) REFERENCES appoinment(id) ON DELETE CASCADE

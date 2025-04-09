@@ -79,10 +79,10 @@ func (h *AppoinmentHandler) UpdateAppoinmentByID(ctx *gin.Context) {
 	}
 
 	data := map[string]interface{}{
-		"title":       updateData.Title,
-		"description": updateData.Description,
-		"start_time":  updateData.StartTime,
-		"end_time":    updateData.EndTime,
+		"title":           updateData.Title,
+		"description":     updateData.Description,
+		"appoinment_date": updateData.AppoinmentDate,
+		"status":          updateData.Status,
 	}
 
 	updatedAppoinment, err := h.repository.UpdateAppoinmentByID(ctx, int64(id), data)

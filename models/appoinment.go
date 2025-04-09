@@ -6,14 +6,14 @@ import (
 )
 
 type Appoinment struct {
-	ID          int64     `json:"id" gorm:"primaryKey"`
-	UserID      int64     `json:"user_id" gorm:"index"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	StartTime   time.Time `json:"start_time"`
-	EndTime     time.Time `json:"end_time"`
-	CreatedAt   time.Time `json:"created_at" gorm:"autoCreateTime"`
-	UpdatedAt   time.Time `json:"updated_at" gorm:"autoUpdateTime"`
+	ID             int64     `json:"id" gorm:"primaryKey"`
+	UserID         int64     `json:"user_id" gorm:"index"`
+	Title          string    `json:"title"`
+	Description    string    `json:"description"`
+	AppoinmentDate string    `json:"appoinment_date"`
+	Status         string    `json:"status"`
+	CreatedAt      time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt      time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 func (Appoinment) TableName() string {
