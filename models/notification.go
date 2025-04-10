@@ -16,7 +16,7 @@ type Notification struct {
 
 // disini define table name
 func (Notification) TableName() string {
-	return "appoinment"
+	return "notification"
 }
 
 type NotificationRepository interface {
