@@ -72,8 +72,9 @@ func (h *NotificationHandler) UpdateNotificationByID(ctx *gin.Context) {
 		return
 	}
 	data := map[string]interface{}{
-		"message": updateData.Message,
-		"is_sent": updateData.IsSent,
+		"message":       updateData.Message,
+		"is_sent":       updateData.IsSent,
+		"appoinment_id": updateData.AppoinmentID,
 	}
 	updatedNotification, err := h.repository.UpdateNotificationByID(ctx, int64(id), data)
 	if err != nil {
