@@ -53,6 +53,8 @@ func main() {
 	r := gin.Default()
 
 	router.SetupAppoinmentRouter(r, db)
+	router.SetupAppoinmentSlotRouter(r, db)
+	router.SetupAppoinmentDayRouter(r, db)
 	router.SetupNotificationRouter(r, db)
 	router.SetupUserRouter(r, db)
 
