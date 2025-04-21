@@ -12,7 +12,7 @@ func SetupAppoinmentDayRouter(r *gin.Engine, db *gorm.DB) {
 	appoinmentDayRepository := repository.NewAppoinmentDayRepository(db)
 	appoinmentDayHandler := handler.NewAppoinmentDayHandler(appoinmentDayRepository)
 
-	appoinmentDay := r.Group("/appoinmentDay")
+	appoinmentDay := r.Group("/appoinment-Day")
 	appoinmentDay.Use(middleware.AuthProtected(db))
 	{
 		appoinmentDay.GET("", appoinmentDayHandler.GetAllAppoinmentDay)
