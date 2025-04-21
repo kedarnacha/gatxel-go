@@ -23,12 +23,13 @@ CREATE TABLE appoinment (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE 
 );
+
 CREATE TABLE appoinment_day (
     id SERIAL PRIMARY KEY,
     appoinment_id INTEGER NOT NULL,
     day_of_week VARCHAR(15) NOT NULL, 
     start_time TIMESTAMP NOT NULL,
-    end_time TIMESTAMP NOT NULL,4
+    end_time TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status BOOLEAN DEFAULT TRUE,
