@@ -1,64 +1,86 @@
 package handler
 
 import (
-	"context"
-	"fmt"
+	"net/http"
+	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/kedarnacha/gatxel-go/models"
-	"gorm.io/gorm"
+	"github.com/kedarnacha/gatxel-go/repository"
 )
 
-type AppoinmentSlotRepository struct {
-	db *gorm.DB
+type AppoinmentSlotHandler struct {
+	Repo *repository.AppoinmentSlotRepository
 }
 
-func NewAppoinmentSlotRepository(db *gorm.DB) *AppoinmentSlotRepository {
-	return &AppoinmentSlotRepository{db: db}
+func NewAppoinmentSlotHandler(repo *repository.AppoinmentSlotRepository) *AppoinmentSlotHandler {
+	return &AppoinmentSlotHandler{Repo: repo}
 }
 
-func (r *AppoinmentSlotRepository) GetAllAppoinmentSlot(ctx context.Context) ([]*models.AppoinmentSlot, error) {
-	fmt.Println("Querying table: appoinmentSlot")
-	var appoinmentSlot []*models.AppoinmentSlot
-
-	err := r.db.Table("appoinmentSlot").Find(&appoinmentSlot).Error
+func (h *AppoinmentSlotHandler) GetAllAppoinmentSlot(c *gin.Context) {
+	data, err := h.Repo.GetAllAppoinmentSlot(c.Request.Context())
 	if err != nil {
-		return nil, err
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
-	return appoinmentSlot, nil
+	c.JSON(http.StatusOK, data)
 }
 
-func (r *AppoinmentSlotRepository) CreateAppoinmentSlot(ctx context.Context, appoinmentSlot *models.AppoinmentSlot) (*models.AppoinmentSlot, error) {
-	if err := r.db.Create(appoinmentSlot).Error; err != nil {
-		return nil, err
+func (h *AppoinmentSlotHandler) CreateAppoinmentSlot(c *gin.Context) {
+	var input models.AppoinmentSlot
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-	return appoinmentSlot, nil
+
+	result, err := h.Repo.CreateAppoinmentSlot(c.Request.Context(), &input)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, result)
 }
 
-func (r *AppoinmentSlotRepository) GetAppoinmentSlotByID(ctx context.Context, id int64) (*models.AppoinmentSlot, error) {
-	appoinmentSlot := &models.AppoinmentSlot{}
-	if res := r.db.Model(appoinmentSlot).Where("id = ?", id).First(appoinmentSlot); res.Error != nil {
-		return nil, res.Error
-	}
-	return appoinmentSlot, nil
-}
-func (r *AppoinmentSlotRepository) UpdateAppoinmentSlotByID(ctx context.Context, id int64, data map[string]interface{}) (*models.AppoinmentSlot, error) {
-	appoinmentSlot := &models.AppoinmentSlot{}
-	res := r.db.Model(&appoinmentSlot).Where("id = ?", id).Updates(data)
+func (h *AppoinmentSlotHandler) GetAppoinmentSlotByID(c *gin.Context) {
+	idStr := c.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
 
-	if res.Error != nil {
-		return nil, res.Error
+	data, err := h.Repo.GetAppoinmentSlotByID(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
-
-	return appoinmentSlot, nil
+	c.JSON(http.StatusOK, data)
 }
 
-func (r *AppoinmentSlotRepository) DeleteAppoinmentSlotByID(ctx context.Context, id int64) error {
-	appoinmentSlot := &models.AppoinmentSlot{}
-	res := r.db.Model(&appoinmentSlot).Where("id = ?", id).Delete(appoinmentSlot)
+func (h *AppoinmentSlotHandler) UpdateAppoinmentSlotByID(c *gin.Context) {
+	idStr := c.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
 
-	if res.Error != nil {
-		return res.Error
+	var data map[string]interface{}
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
-	return nil
+	result, err := h.Repo.UpdateAppoinmentSlotByID(c.Request.Context(), id, data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *AppoinmentSlotHandler) DeleteAppoinmentSlotByID(c *gin.Context) {
+	idStr := c.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+
+	err := h.Repo.DeleteAppoinmentSlotByID(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusNoContent)
 }
