@@ -7,13 +7,13 @@ import (
 
 type AppoinmentDay struct {
 	ID          int64     `json:"id" gorm:"primaryKey"`
-	AppinmentID string    `json:"appoinment_ID"`
-	DayOfWeek   string    `json:"Day_Of_Week"	`
-	startTime   string    `json: "starttime"`
-	endTime     string    `json: "endtime"`
+	AppinmentID string    `json:"appoinment_id"`
+	DayOfWeek   string    `json:"day_of_week"`
+	StartTime   string    `json:"start_time"`
+	EndTime     string    `json:"end_time"`
 	CreatedAt   time.Time `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt   time.Time `json:"updated_at" gorm:"autoUpdateTime"`
-	Status      string    `json: "status"`
+	Status      string    `json:"status"`
 }
 
 func (AppoinmentDay) TableName() string {

@@ -12,7 +12,7 @@ func SetupAppoinmentSlotRouter(r *gin.Engine, db *gorm.DB) {
 	appoinmentSlotRepository := repository.NewAppoinmentSlotRepository(db)
 	appoinmentSlotHandler := handler.NewAppoinmentSlotHandler(appoinmentSlotRepository)
 
-	appoinmentSlot := r.Group("/appoinmentSlot")
+	appoinmentSlot := r.Group("/appoinment-slot")
 	appoinmentSlot.Use(middleware.AuthProtected(db))
 	{
 		appoinmentSlot.GET("", appoinmentSlotHandler.GetAllAppoinmentSlot)

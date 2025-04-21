@@ -23,27 +23,27 @@ CREATE TABLE appoinment (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE 
 );
-CREATE TABLE appointment_day (
+CREATE TABLE appoinment_day (
     id SERIAL PRIMARY KEY,
-    appointment_id INTEGER NOT NULL,
+    appoinment_id INTEGER NOT NULL,
     day_of_week VARCHAR(15) NOT NULL, 
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,4
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (appointment_id) REFERENCES appoinment(id) ON DELETE CASCADE
+    FOREIGN KEY (appoinment_id) REFERENCES appoinment(id) ON DELETE CASCADE
 );
 
-CREATE TABLE appointment_slot (
+CREATE TABLE appoinment_slot (
     id SERIAL PRIMARY KEY,
-    appointment_id INTEGER NOT NULL,
+    appoinment_id INTEGER NOT NULL,
     available BOOLEAN DEFAULT TRUE,
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (appointment_id) REFERENCES appoinment(id) ON DELETE CASCADE
+    FOREIGN KEY (appoinment_id) REFERENCES appoinment(id) ON DELETE CASCADE
 );
 
 CREATE TABLE notification (
