@@ -40,16 +40,17 @@ func (r *NotificationRepository) GetNotificationByID(ctx context.Context, id int
 }
 
 func (r *NotificationRepository) UpdateNotificationByID(ctx context.Context, id int64, data map[string]interface{}) (*models.Notification, error) {
-	notification := &models.Notification{}
-	res := r.db.Model(&notification).Where("id = ?", id).Updates(data)
+	if err := r.db.Model(&models.Notification{}).Where("id = ?", id).Updates(data).Error; err != nil {
+		return nil, err
+	}
 
-	if res.Error != nil {
-		return nil, res.Error
+	notification := &models.Notification{}
+	if err := r.db.First(notification, id).Error; err != nil {
+		return nil, err
 	}
 
 	return notification, nil
 }
-
 func (r *NotificationRepository) DeleteNotificationByID(ctx context.Context, id int64) error {
 	notification := &models.Notification{}
 	res := r.db.Model(&notification).Where("id = ?", id).Delete(notification)

@@ -43,11 +43,13 @@ func (r *AppoinmentSlotRepository) GetAppoinmentSlotByID(ctx context.Context, id
 }
 
 func (r *AppoinmentSlotRepository) UpdateAppoinmentSlotByID(ctx context.Context, id int64, data map[string]interface{}) (*models.AppoinmentSlot, error) {
-	appoinmentSlot := &models.AppoinmentSlot{}
-	res := r.db.Model(&appoinmentSlot).Where("id = ?", id).Updates(data)
+	if err := r.db.Model(&models.AppoinmentSlot{}).Where("id = ?", id).Updates(data).Error; err != nil {
+		return nil, err
+	}
 
-	if res.Error != nil {
-		return nil, res.Error
+	appoinmentSlot := &models.AppoinmentSlot{}
+	if err := r.db.First(appoinmentSlot, id).Error; err != nil {
+		return nil, err
 	}
 
 	return appoinmentSlot, nil
