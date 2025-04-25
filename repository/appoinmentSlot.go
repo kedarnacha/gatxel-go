@@ -17,10 +17,10 @@ func NewAppoinmentSlotRepository(db *gorm.DB) *AppoinmentSlotRepository {
 }
 
 func (r *AppoinmentSlotRepository) GetAllAppoinmentSlot(ctx context.Context) ([]*models.AppoinmentSlot, error) {
-	fmt.Println("Querying table: appoinmentSlot")
+	fmt.Println("Querying table: appoinment_slot")
 	var appoinmentSlot []*models.AppoinmentSlot
 
-	err := r.db.Table("appoinmentDay").Find(&appoinmentSlot).Error
+	err := r.db.Table("appoinment_slot").Find(&appoinmentSlot).Error
 	if err != nil {
 		return nil, err
 	}

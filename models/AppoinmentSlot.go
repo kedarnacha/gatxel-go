@@ -7,17 +7,16 @@ import (
 
 type AppoinmentSlot struct {
 	ID           int64     `json:"id" gorm:"primaryKey"`
-	AppoinmentID string    `json:"appointment_ID"`
-	Available    string    `json:"available"`
-	StartTime    string    `json:"startTime"`
-	EndTime      string    `json:"endTime"`
+	AppoinmentID int64     `json:"appointment_id"`
+	Available    bool      `json:"available"`
+	StartTime    string    `json:"startTime" gorm:"column:start_time"`
+	EndTime      string    `json:"endTime" gorm:"column:end_time"`
 	CreatedAt    time.Time `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt    time.Time `json:"updated_at" gorm:"autoUpdateTime"`
-	Status       string    `json:"status"`
 }
 
 func (AppoinmentSlot) TableName() string {
-	return "appoinmentSlot"
+	return "appoinment_slot"
 }
 
 type AppointmentSlotRepository interface {

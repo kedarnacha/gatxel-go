@@ -6,18 +6,18 @@ import (
 )
 
 type AppoinmentDay struct {
-	ID          int64     `json:"id" gorm:"primaryKey"`
-	AppinmentID string    `json:"appoinment_id"`
-	DayOfWeek   string    `json:"day_of_week"`
-	StartTime   string    `json:"start_time"`
-	EndTime     string    `json:"end_time"`
-	CreatedAt   time.Time `json:"created_at" gorm:"autoCreateTime"`
-	UpdatedAt   time.Time `json:"updated_at" gorm:"autoUpdateTime"`
-	Status      string    `json:"status"`
+	ID           int64     `json:"id" gorm:"primaryKey"`
+	AppoinmentID int64     `json:"appoinment_id"`
+	DayOfWeek    string    `json:"day_of_week"`
+	StartTime    string    `json:"start_time"`
+	EndTime      string    `json:"end_time"`
+	CreatedAt    time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt    time.Time `json:"updated_at" gorm:"autoUpdateTime"`
+	Status       bool      `json:"status"`
 }
 
 func (AppoinmentDay) TableName() string {
-	return "appoinmentDay"
+	return "appoinment_day"
 }
 
 type AppoinmentDayRepository interface {

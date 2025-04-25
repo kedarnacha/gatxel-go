@@ -63,6 +63,15 @@ func (h *AppoinmentSlotHandler) UpdateAppoinmentSlotByID(c *gin.Context) {
 		return
 	}
 
+	if val, ok := data["startTime"]; ok {
+		data["start_time"] = val
+		delete(data, "startTime")
+	}
+	if val, ok := data["endTime"]; ok {
+		data["end_time"] = val
+		delete(data, "endTime")
+	}
+
 	result, err := h.Repo.UpdateAppoinmentSlotByID(c.Request.Context(), id, data)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

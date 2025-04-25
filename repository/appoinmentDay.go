@@ -17,10 +17,10 @@ func NewAppoinmentDayRepository(db *gorm.DB) *AppoinmentDayRepository {
 }
 
 func (r *AppoinmentDayRepository) GetAllAppoinmentDay(ctx context.Context) ([]*models.AppoinmentDay, error) {
-	fmt.Println("Querying table: appoinmentDay")
+	fmt.Println("Querying table: appoinment_day")
 	var appoinmentDay []*models.AppoinmentDay
 
-	err := r.db.Table("appoinmentDay").Find(&appoinmentDay).Error
+	err := r.db.Table("appoinment_day").Find(&appoinmentDay).Error
 	if err != nil {
 		return nil, err
 	}
